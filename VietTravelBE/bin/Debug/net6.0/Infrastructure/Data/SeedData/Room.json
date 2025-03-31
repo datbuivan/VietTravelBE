@@ -1,0 +1,80 @@
+[
+    {
+        "Name": "Phòng Đôi hoặc Hai Giường Đơn Loại Sang Hướng Vườn",
+        "PriceOneNight": 786000,
+        "TypeRoom": 2,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": false,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 1
+    },
+    {},
+    {
+        "Name": "Phòng Đôi hoặc Hai Giường Đơn Loại Sang Hướng Vườn",
+        "PriceOneNight": 987000,
+        "TypeRoom": 2,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 1
+    },
+    {
+        "Name": "Phòng Loại Sang Hướng Biển Giường Đôi Hoặc 2 Giường Đơn Có Ban Công",
+        "PriceOneNight": 1250000,
+        "TypeRoom": 2,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 1
+    },
+    {
+        "Name": "Junior Deluxe",
+        "PriceOneNight": 1250000,
+        "TypeRoom": 2,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 1
+    },
+    {
+        "Name": "Phòng Deluxe Suite Có Ban Công",
+        "PriceOneNight": 1250000,
+        "TypeRoom": 3,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 2
+    },
+    {
+        "Name": "KING BALCONE ROOM",
+        "PriceOneNight": 1250000,
+        "TypeRoom": 3,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 2
+    },
+    {
+        "Name": "KING CLASSICO ROOM",
+        "PriceOneNight": 1250000,
+        "TypeRoom": 3,
+        "FreeWifi": true,
+        "BreakFast": true,
+        "FreeBreakFast": true,
+        "CoffeeAndTea": true,
+        "Park": true,
+        "HotelId": 2
+    }
+]

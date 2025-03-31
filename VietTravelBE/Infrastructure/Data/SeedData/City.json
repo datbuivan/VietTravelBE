@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "Hà Nội",
+        "Pictures": "hanoi.jpg"
+    },
+    {
+        "Name": "Thanh Hoá",
+        "Pictures": "thanhhoa.jpg"
+    },
+    {
+        "Name": "Phú Quốc",
+        "Pictures": "phuquoc.jpg"
+    },
+    {
+        "Name": "Đồng Tháp",
+        "Pictures": "dongthap.jpg"
+    },
+    {
+        "Name": "Thái Bình",
+        "Pictures": "thaibinh.jpg"
+    }
+]

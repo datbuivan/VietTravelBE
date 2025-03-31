@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VietTravelBE", "VietTravelBE\VietTravelBE.csproj", "{32BA6AB2-9135-4CF6-BA1A-4608AD9AF9E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VietTravel.Tests", "VietTravel.Tests\VietTravel.Tests.csproj", "{0EE56FD3-0958-489C-9FC2-45B54666A15B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32BA6AB2-9135-4CF6-BA1A-4608AD9AF9E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32BA6AB2-9135-4CF6-BA1A-4608AD9AF9E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32BA6AB2-9135-4CF6-BA1A-4608AD9AF9E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32BA6AB2-9135-4CF6-BA1A-4608AD9AF9E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE56FD3-0958-489C-9FC2-45B54666A15B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE56FD3-0958-489C-9FC2-45B54666A15B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE56FD3-0958-489C-9FC2-45B54666A15B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE56FD3-0958-489C-9FC2-45B54666A15B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A74FB179-56BA-4D3F-9225-9B393DD76872}
+	EndGlobalSection
+EndGlobal
