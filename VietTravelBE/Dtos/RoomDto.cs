@@ -10,7 +10,7 @@ namespace VietTravelBE.Dtos
         [StringLength(100)]
         public string Name { get; set; }   // Tên phòng
         [Precision(18, 2)]
-        public decimal PriceOneNight { get; set; }   
+        public decimal Price { get; set; }   
         public int? Superficies { get; set; }    
         public int TypeRoom { get; set; }
         public bool FreeWifi { get; set; }  

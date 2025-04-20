@@ -12,7 +12,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         [StringLength(100)]
         public string Name { get; set; }   // Tên phòng
         [Precision(18, 2)]
-        public decimal PriceOneNight { get; set; }   // Giá một đêm
+        public decimal Price { get; set; }   // Giá một đêm
         public int? Superficies { get; set; }    // Diện tích
         /*
          * Loại phòng
@@ -22,13 +22,14 @@ namespace VietTravelBE.Infrastructure.Data.Entities
          *      Suite     4
          */
         public int TypeRoom { get; set; }
-        public bool FreeWifi { get; set; }  // Wifi miễn phí
-        public bool BreakFast { get; set; }    // Bữa sáng
-        public bool FreeBreakFast { get; set; } // Miễn phí bữa sáng
-        public bool DrinkWater { get; set; }    // Nước uống miễn phí
-        public bool CoffeeAndTea { get; set; }  // Cafe và Trà
-        public bool Park { get; set; } // Bãi đỗ xe
+        public bool FreeWifi { get; set; } 
+        public bool BreakFast { get; set; }   
+        public bool FreeBreakFast { get; set; } 
+        public bool DrinkWater { get; set; }    
+        public bool CoffeeAndTea { get; set; }  
+        public bool Park { get; set; } 
         public int HotelId { get; set; }
-        public Hotel? Hotel { get; set; }
+        public Hotel Hotel { get; set; }
+
     }
 }

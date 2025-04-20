@@ -17,5 +17,7 @@ namespace VietTravelBE.Dtos
 
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
+
+        public int RegionId { get; set; }
     }
 }

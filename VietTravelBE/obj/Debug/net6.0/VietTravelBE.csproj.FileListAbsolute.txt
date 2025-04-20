@@ -274,3 +274,9 @@ D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\xunit.assert.dll
 D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\xunit.core.dll
 D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\xunit.execution.dotnet.dll
 D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\obj\Debug\net6.0\VietTravelBE.sourcelink.json
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+D:\Nam4\DATN\VietTravelBE\VietTravelBE\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

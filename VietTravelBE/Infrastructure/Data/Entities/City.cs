@@ -16,9 +16,10 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public string TitleIntroduct { get; set; }
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
+        public int? RegionId { get; set; }
+        public Region? Region { get; set; }
         public ICollection<Tour>? Tours { get; set; } = new List<Tour>();
         public ICollection<Hotel>? Hotels { get; set; } = new List<Hotel>();
-        public ICollection<Evaluate>? Evaluates { get; set; } = new List<Evaluate>();
 
     }
 }

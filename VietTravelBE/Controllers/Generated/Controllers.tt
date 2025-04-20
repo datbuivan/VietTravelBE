@@ -1,0 +1,38 @@
+﻿<#@ template language="C#" debug="true" hostspecific="true" #>
+<#@ import namespace="System.Collections.Generic" #>
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using VietTravelBE.Core.Interface;
+using VietTravelBE.Infrastructure.Data.Entities;
+using VietTravelBE.Dtos;
+
+namespace VietTravelBE.Controllers
+{
+<#
+    var entities = new List<(string Entity, string CreateDto, string Dto, bool HasSpec)>
+    { 
+        ("Hotel", "HotelCreateDto", "HotelDto", true),
+        ("Tour", "TourCreateDto", "TourDto", true),
+        ("Room", "RoomDto", "RoomDto", false),
+        ("City", "CityDto", "CityDto", false),
+         ("Region", "RegionDto", "RegionDto", false)
+    };
+
+    foreach (var (entity, createDto, dto, hasSpec) in entities)
+    {
+        var baseClass = hasSpec 
+            ? $"BaseApiWithSpecController<{entity}, {createDto}, {dto}>"
+            : $"BaseApiController<{entity}, {createDto}, {dto}>";
+#>
+    [Route("api/[controller]")]
+    [ApiController]
+    public partial class <#= entity #>Controller : <#= baseClass  #>
+    {
+        public <#= entity #>Controller(IGenericRepository<<#= entity #>> repo, IUnitOfWork unit, IMapper mapper)
+            : base(repo, unit, mapper) { }
+    }
+
+<#
+    }
+#>
+}

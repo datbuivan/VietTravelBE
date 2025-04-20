@@ -13,8 +13,6 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public string Name { get; set; }
         [StringLength(255)]
         public string Address { get; set; }
-        [Precision(18, 2)]
-        public decimal PriceOneNight { get; set; }
         [StringLength(12)]
         public string PhoneNumber { get; set; }
         [StringLength(2000)]
@@ -22,12 +20,13 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
         public string Pictures { get; set; }
+        [Precision(18, 2)]
+        public decimal Price { get; set; }
         public int CityId { get; set; }
-        public City? City { get; set; }
-        public ICollection<Room>? Rooms { get; set; } = new List<Room>();
-        public ICollection<Evaluate>? Evaluates { get; set; } = new List<Evaluate>();
-        public ICollection<TourPackage> TourPackages { get; set; } = new List<TourPackage>();
-
-
+        public City City { get; set; }
+        public ICollection<Room> Rooms { get; set; } 
+        public ICollection<Review> Reviews { get; set; } 
+        public ICollection<Tour> Tours { get; set; } = new List<Tour>();
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

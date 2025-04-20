@@ -6,83 +6,150 @@ namespace VietTravelBE.Infrastructure
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public DbSet<City> City { get; set; }
-        public DbSet<Evaluate> Evaluate { get; set; }
-        public DbSet<Hotel> Hotel { get; set; }
-        public DbSet<Schedule> Schedule { get; set; }
-        public DbSet<Ticket> Ticket { get; set; }
-        public DbSet<TimePackage> TimePackage { get; set; }
-        public DbSet<Tour> Tour { get; set; }
-        public DbSet<TourPackage> TourPackage { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<Room> Room { get; set; }
+        public DbSet<AppUser> Users { get; set; }
+        public DbSet<Region> Regions { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Tour> Tours { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<TourStartDate> TourStartDates { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<TourSchedule> TourSchedule { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<TourFavorite> TourFavorites { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.Tours)
-                .WithOne(e => e.City)
-                .HasForeignKey(e => e.CityId)
-                .IsRequired(false);
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.Hotels)
-                .WithOne(e => e.City)
-                .HasForeignKey(e => e.CityId)
-                .IsRequired(false); 
+            // Quan hệ 1-n : Region - City 
+            modelBuilder.Entity<Region>()
+                .HasMany(r => r.Cities)
+                .WithOne(c => c.Region)
+                .HasForeignKey(c => c.RegionId)
+                .OnDelete(DeleteBehavior.NoAction);
+            // Quan hệ 1-n: City - Hotel
             modelBuilder.Entity<Hotel>()
-                .HasMany(e => e.Evaluates)
-                .WithOne(e => e.Hotel)
-                .HasForeignKey(e => e.HotelId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
+                .HasOne(h => h.City)
+                .WithMany(c => c.Hotels)
+                .HasForeignKey(h => h.CityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: City - Tour
             modelBuilder.Entity<Tour>()
-                .HasMany(e => e.Schedules)
-                .WithOne(e => e.Tour)
-                .HasForeignKey(e => e.TourId)
-                .IsRequired(false);
-            modelBuilder.Entity<Tour>()
-                .HasMany(e => e.TourPackages)
-                .WithOne(e => e.Tour)
-                .HasForeignKey(e => e.TourId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
+                .HasOne(t => t.City)
+                .WithMany(c => c.Tours)
+                .HasForeignKey(t => t.CityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: Hotel - Room
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Hotel)
+                .WithMany(h => h.Rooms)
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: User -Booking
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.User)
+                .WithMany(u => u.Bookings)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.HasOne(b => b.Hotel)
+                      .WithMany(h => h.Bookings)
+                      .HasForeignKey(b => b.HotelId)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(b => b.Tour)
+                      .WithMany(t => t.Bookings)
+                      .HasForeignKey(b => b.TourId)
+                      .OnDelete(DeleteBehavior.SetNull);
+            });
+                  
+            // Quan hệ 1-n: Booking - Payment
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Payment)
+                .WithOne(p => p.Booking)
+                .HasForeignKey<Payment>(p => p.BookingId);
+
+            // Quan hệ 1-n: Tour - TourSchedule
+            modelBuilder.Entity<TourSchedule>()
+                .HasOne(ts => ts.Tour)
+                .WithMany(t => t.TourSchedules)
+                .HasForeignKey(ts => ts.TourId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: Tour - TourStartDate
+            modelBuilder.Entity<TourStartDate>()
+                .HasOne(ts => ts.Tour)
+                .WithMany(t => t.TourStartDates)
+                .HasForeignKey(ts => ts.TourId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: TourStartDate - Bookings
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.TourStartDate)
+                .WithMany(ts => ts.Bookings)
+                .HasForeignKey(b => b.TourStartDateId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: User - Review
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: Tour - Review (có thể null)
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Tour)
+                .WithMany(t => t.Reviews)
+                .HasForeignKey(r => r.TourId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ 1-n: Hotel - Review (có thể null)
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Hotel)
+                .WithMany(h => h.Reviews)
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Quan hệ n-n: Tour - Hotel
             modelBuilder.Entity<Hotel>()
-                .HasMany(e => e.TourPackages)
-                .WithOne(e => e.Hotel)
-                .HasForeignKey(e => e.HotelId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-            modelBuilder.Entity<Hotel>()
-                .HasMany(e =>e.Rooms)
-                .WithOne(e =>e.Hotel)
-                .HasForeignKey(e => e.HotelId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-            modelBuilder.Entity<TourPackage>()
-                .HasMany(e => e.Tickets)
-                .WithOne(e => e.TourPackage)
-                .HasForeignKey(e => e.TourPackageId)
-                .IsRequired(false);
-            modelBuilder.Entity<TimePackage>()
-                .HasMany(e => e.TourPackages)
-                .WithOne(e => e.TimePackage)
-                .HasForeignKey(e => e.TimePackageId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Evaluates)
-                .WithOne(e => e.User)
-                .HasForeignKey(e => e.UserId)
-                .IsRequired(false);
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Tickets)
-                .WithOne(e => e.User)
-                .HasForeignKey(e => e.UserId)
-                .IsRequired(false);
-            modelBuilder.Entity<Schedule>()
-                .HasMany(e => e.ScheduleTourPackages)
-                .WithOne(e => e.Schedule)
-                .HasForeignKey(e => e.ScheduleId)
-                .IsRequired(false);
+                .HasMany(h => h.Tours)
+                .WithMany(t => t.Hotels)
+                .UsingEntity<Dictionary<string, object>>(
+                    "hoteltour",
+                    j => j.HasOne<Tour>().WithMany().HasForeignKey("TourId"),
+                    j => j.HasOne<Hotel>().WithMany().HasForeignKey("HotelId"),
+                    j => j.HasKey("HotelId", "TourId") // Khóa chính của bảng trung gian
+                );
+
+            // Quan hệ n-n User - Tour
+            modelBuilder.Entity<TourFavorite>()
+             .HasKey(tf => new { tf.UserId, tf.TourId }); // Định nghĩa khóa chính (UserId + TourId)
+
+            modelBuilder.Entity<TourFavorite>()
+                .HasOne(tf => tf.User)
+                .WithMany(u => u.TourFavorites)
+                .HasForeignKey(tf => tf.UserId)
+                .OnDelete(DeleteBehavior.NoAction); // Xóa User sẽ xóa luôn TourFavorites của User đó
+
+            modelBuilder.Entity<TourFavorite>()
+                .HasOne(tf => tf.Tour)
+                .WithMany(t => t.TourFavorites)
+                .HasForeignKey(tf => tf.TourId)
+                .OnDelete(DeleteBehavior.NoAction); // Xóa Tour sẽ xóa luôn các User yêu thích Tour đó
+
+            modelBuilder.Entity<Image>()
+                .Property(i => i.ImageType)
+                .IsRequired();
+            modelBuilder.Entity<Image>()
+                .HasIndex(i => new { i.EntityId, i.ImageType });
+            modelBuilder.Entity<Image>()
+                .Property(i => i.ImageType)
+                .HasConversion<string>();
         }
     }
 }

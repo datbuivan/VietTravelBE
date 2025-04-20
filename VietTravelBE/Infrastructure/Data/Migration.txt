@@ -1,3 +1,5 @@
 Add-Migration Init -OutputDir Infrastructure/Data/Migrations
 UpDate-Database
 Remove-Migration
+
+Add-Migration AddIdentity -OutputDir Infrastructure/Data/Migrations

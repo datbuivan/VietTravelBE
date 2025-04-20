@@ -22,6 +22,150 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("hoteltour", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HotelId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("hoteltour");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.AppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Adults")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Children")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("HotelCheckInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("HotelCheckOutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPeople")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TourStartDateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("TourId");
+
+                    b.HasIndex("TourStartDateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("booking");
+                });
+
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -45,6 +189,9 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int?>("RegionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TitleIntroduct")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -52,44 +199,9 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RegionId");
+
                     b.ToTable("city");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Evaluate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Eva")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HotelId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("evaluate");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Hotel", b =>
@@ -127,7 +239,7 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceOneNight")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -141,6 +253,124 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("hotel");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntityId", "ImageType");
+
+                    b.ToTable("image");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
+
+                    b.ToTable("payment");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Region", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("region");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("TourId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("review");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Room", b =>
@@ -177,7 +407,7 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                     b.Property<bool>("Park")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("PriceOneNight")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -194,125 +424,6 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                     b.ToTable("room");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Schedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Pictures")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("PriceTicketAdult")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("PriceTicketKid")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("TicketEnable")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("schedule");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.ScheduleTourPackage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ScheduleId");
-
-                    b.ToTable("ScheduleTourPackage");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("TourPackageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourPackageId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ticket");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TimePackage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HourNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("timepackage");
-                });
-
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Tour", b =>
                 {
                     b.Property<int>("Id")
@@ -321,53 +432,31 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<decimal>("ChildPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CityId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ContentIntroduct")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<float?>("MediumStar")
-                        .HasColumnType("real");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("NumberOfEvaluate")
-                        .HasColumnType("int");
-
                     b.Property<string>("Pictures")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<decimal?>("PriceBase")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("PriceTourGuide")
+                    b.Property<decimal?>("SingleRoomSurcharge")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TitleIntroduct")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<decimal?>("TotalPrice")
+                    b.Property<decimal>("YoungPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -378,7 +467,28 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                     b.ToTable("tour");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourPackage", b =>
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourFavorite", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("tourfavorite");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourSchedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -386,60 +496,28 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("BasePrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Discount")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("HotelId")
+                    b.Property<int>("DayNumber")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("LastPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ListScheduleTourPackage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumberOfAdult")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberOfChildren")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TimePackageId")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TourId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("TimePackageId");
-
                     b.HasIndex("TourId");
 
-                    b.ToTable("tourpackage");
+                    b.ToTable("tourschedule");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.User", b =>
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourStartDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -447,84 +525,124 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<int>("AvailableSlots")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("UniCodeName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.HasIndex("TourId");
+
+                    b.ToTable("tourstartdate");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Evaluate", b =>
+            modelBuilder.Entity("hoteltour", b =>
                 {
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.City", null)
-                        .WithMany("Evaluates")
-                        .HasForeignKey("CityId");
-
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", "Hotel")
-                        .WithMany("Evaluates")
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", null)
+                        .WithMany()
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.User", "User")
-                        .WithMany("Evaluates")
-                        .HasForeignKey("UserId");
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", null)
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Booking", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", "Hotel")
+                        .WithMany("Bookings")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
+                        .WithMany("Bookings")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.TourStartDate", "TourStartDate")
+                        .WithMany("Bookings")
+                        .HasForeignKey("TourStartDateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.AppUser", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
 
+                    b.Navigation("Tour");
+
+                    b.Navigation("TourStartDate");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.City", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Region", "Region")
+                        .WithMany("Cities")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Hotel", b =>
                 {
                     b.HasOne("VietTravelBE.Infrastructure.Data.Entities.City", "City")
                         .WithMany("Hotels")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Payment", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Booking", "Booking")
+                        .WithOne("Payment")
+                        .HasForeignKey("VietTravelBE.Infrastructure.Data.Entities.Payment", "BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Review", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", "Hotel")
+                        .WithMany("Reviews")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
+                        .WithMany("Reviews")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.AppUser", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Tour");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Room", b =>
@@ -532,81 +650,81 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                     b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", "Hotel")
                         .WithMany("Rooms")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Schedule", b =>
-                {
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
-                        .WithMany("Schedules")
-                        .HasForeignKey("TourId");
-
-                    b.Navigation("Tour");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.ScheduleTourPackage", b =>
-                {
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Schedule", "Schedule")
-                        .WithMany("ScheduleTourPackages")
-                        .HasForeignKey("ScheduleId");
-
-                    b.Navigation("Schedule");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Ticket", b =>
-                {
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.TourPackage", "TourPackage")
-                        .WithMany("Tickets")
-                        .HasForeignKey("TourPackageId");
-
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.User", "User")
-                        .WithMany("Tickets")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("TourPackage");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Tour", b =>
                 {
                     b.HasOne("VietTravelBE.Infrastructure.Data.Entities.City", "City")
                         .WithMany("Tours")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourPackage", b =>
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourFavorite", b =>
                 {
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Hotel", "Hotel")
-                        .WithMany("TourPackages")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.TimePackage", "TimePackage")
-                        .WithMany("TourPackages")
-                        .HasForeignKey("TimePackageId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
-                        .WithMany("TourPackages")
+                        .WithMany("TourFavorites")
                         .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("Hotel");
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.AppUser", "User")
+                        .WithMany("TourFavorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("TimePackage");
+                    b.Navigation("Tour");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourSchedule", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
+                        .WithMany("TourSchedules")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Tour");
                 });
 
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourStartDate", b =>
+                {
+                    b.HasOne("VietTravelBE.Infrastructure.Data.Entities.Tour", "Tour")
+                        .WithMany("TourStartDates")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.AppUser", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("TourFavorites");
+                });
+
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Booking", b =>
+                {
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.City", b =>
                 {
-                    b.Navigation("Evaluates");
-
                     b.Navigation("Hotels");
 
                     b.Navigation("Tours");
@@ -614,40 +732,34 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Hotel", b =>
                 {
-                    b.Navigation("Evaluates");
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("Rooms");
-
-                    b.Navigation("TourPackages");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Schedule", b =>
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Region", b =>
                 {
-                    b.Navigation("ScheduleTourPackages");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TimePackage", b =>
-                {
-                    b.Navigation("TourPackages");
+                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.Tour", b =>
                 {
-                    b.Navigation("Schedules");
+                    b.Navigation("Bookings");
 
-                    b.Navigation("TourPackages");
+                    b.Navigation("Reviews");
+
+                    b.Navigation("TourFavorites");
+
+                    b.Navigation("TourSchedules");
+
+                    b.Navigation("TourStartDates");
                 });
 
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourPackage", b =>
+            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourStartDate", b =>
                 {
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.User", b =>
-                {
-                    b.Navigation("Evaluates");
-
-                    b.Navigation("Tickets");
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

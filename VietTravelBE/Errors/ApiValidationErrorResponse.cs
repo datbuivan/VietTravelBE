@@ -1,6 +1,6 @@
 ﻿namespace VietTravelBE.Errors
 {
-    public class ApiValidationErrorResponse : ApiResponse
+    public class ApiValidationErrorResponse : ApiResponse<Object>
     {
         public ApiValidationErrorResponse() : base(400)
         {

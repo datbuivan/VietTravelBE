@@ -8,13 +8,13 @@ namespace VietTravelBE.Infrastructure
     {
         public static async Task SeedAsync(DataContext context)
         {
-            if (!context.City.Any())
+            if (!context.Cities.Any())
             {
                 var cityData = File.ReadAllText("./Infrastructure/Data/SeedData/City.json");
                 var city = JsonSerializer.Deserialize<List<City>>(cityData);
                 if (city != null)
                 {
-                    context.City.AddRange(city);
+                    context.Cities.AddRange(city);
                 }
             }
             //if (!context.Hotel.Any())

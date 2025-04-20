@@ -1,9 +1,15 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Extensions;
 using VietTravelBE.Helpers;
 using VietTravelBE.Infrastructure;
+using VietTravelBE.Infrastructure.Data.Entities;
+using VietTravelBE.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,20 +28,53 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseSqlServer(
-        builder.Configuration.GetConnectionString("VietTravelConnStr"),
+        builder.Configuration.GetConnectionString("VietTravelConnStr")!,
         //sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
         options => options.CommandTimeout(4500)
     );
 });
 
+//builder.Services.AddIdentity<AppUser, IdentityRole>()
+//    .AddEntityFrameworkStores<DataContext>()
+//    .AddDefaultTokenProviders();
+
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(options =>
+//{
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidateIssuerSigningKey = true,
+//        ValidIssuer = builder.Configuration["JWT:Issuer"],
+//        ValidAudience = builder.Configuration["JWT:Audience"],
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+//    };
+//});
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+//    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+//});
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
-
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<RoomService>();
+builder.Services.AddScoped<CityService>();
+builder.Services.AddScoped<HotelService>();
+builder.Services.AddScoped<TourService>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+        policy.WithOrigins("http://localhost:4300").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
     });
 });
 var app = builder.Build();
@@ -45,8 +84,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 var urlOrigins = new[]
 {
-    "http://localhost:5000",
-    "https://localhost:5001"
+    "http://localhost:4200",
+    "http://localhost:4300"
 };
 app.UseCors(opt =>
 {
