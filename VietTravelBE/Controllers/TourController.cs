@@ -1,28 +1,47 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VietTravelBE.Core.Interface;
-using VietTravelBE.Core.Specifications;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
-using VietTravelBE.Infrastructure.Data.Entities;
-using VietTravelBE.Infrastructure.Services;
-
+using Xunit.Sdk;
 namespace VietTravelBE.Controllers
 {
     public partial class TourController
     {
-        [HttpPost]
-        public override async Task<ActionResult<ApiResponse<TourCreateDto>>> Create([FromBody] TourCreateDto tourDto)
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<TourDto>>> Update(int id, [FromBody] TourCreateDto dto)
+        {
+            return await base.Update(id, dto);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<string>>> Delete(int id)
+        {
+            return await base.Delete(id);
+        }
+
+        [HttpPost]  
+        //[Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<TourDto>>> Create([FromForm]TourCreateDto tourDto)
         {
 
-            if (!ModelState.IsValid)
-                return BadRequest(new ApiResponse<TourDto>(400, "Invalid Tour data"));
+            if (tourDto.PrimaryImage != null)
+            {
+                string errorMessage;
+                if (!_fileValidationService.ValidateFile(tourDto.PrimaryImage, out errorMessage))
+                {
+                    return BadRequest(new ApiResponse<string>(400, errorMessage));
+                }
+            }
 
+            if (!ModelState.IsValid)
+                return BadRequest(new ApiResponse<TourCreateDto>(400, "Invalid Tour data"));
             try
             {
                 var createdTour = await _tourService.CreateTour(tourDto);
-                return CreatedAtAction(nameof(GetAll), new { id = createdTour.Id }, new ApiResponse<TourCreateDto>(201, data: createdTour));
+                return CreatedAtAction(nameof(GetAll), new { id = createdTour.Id }, new ApiResponse<TourDto>(201, data: createdTour));
             }
             catch (Exception ex)
             {

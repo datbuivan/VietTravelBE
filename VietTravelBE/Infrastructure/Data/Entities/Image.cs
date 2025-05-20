@@ -9,10 +9,13 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public string Url { get; set; }
         public int EntityId { get; set; }
         public ImageType ImageType { get; set; }
+        public bool IsPrimary { get; set; }
+        public string PublicId { get; set; }
     }
     public enum ImageType
     {
         Tour,
-        Hotel
+        Hotel,
+        City
     }
 }

@@ -26,7 +26,8 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public bool BreakFast { get; set; }   
         public bool FreeBreakFast { get; set; } 
         public bool DrinkWater { get; set; }    
-        public bool CoffeeAndTea { get; set; }  
+        public bool CoffeeAndTea { get; set; }
+        public string Pictures { get; set; }
         public bool Park { get; set; } 
         public int HotelId { get; set; }
         public Hotel Hotel { get; set; }

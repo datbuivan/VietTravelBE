@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Collections;
 using System.Collections.Concurrent;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Infrastructure.Data.Entities.Custom;
@@ -13,6 +14,11 @@ namespace VietTravelBE.Infrastructure
         {
             _context = context;
 
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
         }
 
         public async Task<int> Complete()
@@ -46,6 +52,11 @@ namespace VietTravelBE.Infrastructure
                 ?? throw new InvalidOperationException($"Repository instance for {type} is not of expected type.");
         }
 
-        
+        public async Task RollbackAsync()
+        {
+            await _context.Database.RollbackTransactionAsync();
+        }
+
+
     }
 }

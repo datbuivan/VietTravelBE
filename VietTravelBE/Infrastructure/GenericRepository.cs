@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Infrastructure.Data.Entities.Custom;
 
@@ -15,6 +16,10 @@ namespace VietTravelBE.Infrastructure
         {
             _context.Set<T>().Add(entity);
         }
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+        }
         public void Update(T entity)
         {
             _context.Set<T>().Attach(entity);
@@ -27,6 +32,16 @@ namespace VietTravelBE.Infrastructure
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().CountAsync(predicate);
+        }
+
+        public async Task<T?> FindSingleAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
         public async Task<T> GetByIdAsync(int id)

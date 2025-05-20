@@ -10,8 +10,8 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
-        [StringLength(1000)]
-        public string Pictures { get; set; }
+        //[StringLength(1000)]
+        //public string Pictures { get; set; }
         [StringLength(2000)]
         public string TitleIntroduct { get; set; }
         [StringLength(2000)]
@@ -20,6 +20,8 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public Region? Region { get; set; }
         public ICollection<Tour>? Tours { get; set; } = new List<Tour>();
         public ICollection<Hotel>? Hotels { get; set; } = new List<Hotel>();
+        [NotMapped]
+        public Image Image { get; set; }
 
     }
 }

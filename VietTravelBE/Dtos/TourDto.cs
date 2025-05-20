@@ -14,12 +14,12 @@ namespace VietTravelBE.Dtos
         [Precision(18, 2)]
         public decimal Price { get; set; }
         [Precision(18, 2)]
-        public decimal YoungPrice { get; set; }
-        [Precision(18, 2)]
         public decimal ChildPrice { get; set; }
         [Precision(18, 2)]
-        public decimal? SingleRoomSurcharge { get; set; }
+        public decimal SingleRoomSurcharge { get; set; }
         public int CityId { get; set; }
-        public List<TourStartDateDto>? TourStartDates { get; set; } 
+        public List<TourStartDateDto>? TourStartDates { get; set; }
+        public List<TourScheduleDto>? TourSchedules { get; set; }
+        public List<IFormFile>? Images { get; set; }
     }
 }

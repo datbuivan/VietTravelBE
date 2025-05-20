@@ -39,7 +39,7 @@ namespace VietTravelBE.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<ApiResponse<TCreateDto>>> GetById(int id)
+        public virtual async Task<ActionResult<ApiResponse<TDto>>> GetById(int id)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace VietTravelBE.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<ApiResponse<TCreateDto>>> Create([FromBody] TCreateDto dto)
+        public virtual async Task<ActionResult<ApiResponse<TDto>>> Create([FromBody] TCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace VietTravelBE.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<ApiResponse<TDto>>> Update(int id, [FromBody] TDto dto)
+        public virtual async Task<ActionResult<ApiResponse<TDto>>> Update(int id, [FromBody] TCreateDto dto)
         {
             var entity = await _repo.GetByIdAsync(id);
             if (entity == null)
@@ -117,23 +117,6 @@ namespace VietTravelBE.Controllers
                 return StatusCode(500, new ApiException(500, "Internal Server Error", ex.Message));
             }
         }
-        //[HttpGet("filter")]
-        //public virtual async Task<ActionResult<ApiResponse<IReadOnlyList<TDto>>>> GetWidthSpec([FromQuery] SpecParams? specParams)
-        //{
-        //    try
-        //    {
-        //        var spec = CreateSpecification(specParams);
-        //        var entities = await _repo.ListAsync(spec);
-        //        var data = _mapper.Map<IReadOnlyList<TDto>>(entities);
-        //        return Ok(new ApiResponse<IReadOnlyList<TDto>>(200, data: data));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new ApiException(500, "Internal Server Error", ex.Message));
-        //    }
-        //}
-
-
 
         protected virtual object? GetEntityId(TEntity entity)
         {

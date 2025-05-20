@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using VietTravelBE.Dtos;
 
 namespace VietTravelBE.Extensions
 {
@@ -27,6 +28,19 @@ namespace VietTravelBE.Extensions
                 c.AddSecurityDefinition("Bearer", securitySchema);
                 var securityRequirement = new OpenApiSecurityRequirement { { securitySchema, new[] { "Bearer" } } };
                 c.AddSecurityRequirement(securityRequirement);
+
+                c.MapType<List<TourStartDateDto>>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "json"
+                });
+
+                c.MapType<List<TourScheduleDto>>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "json"
+                });
+
             });
 
             return services;

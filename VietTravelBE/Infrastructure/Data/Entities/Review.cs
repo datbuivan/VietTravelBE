@@ -16,8 +16,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public Tour? Tour { get; set; }  
         public int? HotelId { get; set; }
         public Hotel? Hotel { get; set; }
-        public int UserId { get; set; }
-        [NotMapped]
+        public string UserId { get; set; }
         public AppUser User { get; set; }
     }
     public enum ReviewType

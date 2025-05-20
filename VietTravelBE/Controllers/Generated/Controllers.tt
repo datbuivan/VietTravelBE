@@ -14,7 +14,7 @@ namespace VietTravelBE.Controllers
         ("Hotel", "HotelCreateDto", "HotelDto", true),
         ("Tour", "TourCreateDto", "TourDto", true),
         ("Room", "RoomDto", "RoomDto", false),
-        ("City", "CityDto", "CityDto", false),
+        ("City", "CityCreateDto", "CityDto", false),
          ("Region", "RegionDto", "RegionDto", false)
     };
 

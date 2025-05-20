@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using VietTravelBE.Infrastructure.Data.Entities;
 
 namespace VietTravelBE.Infrastructure
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
@@ -18,8 +18,10 @@ namespace VietTravelBE.Infrastructure
         public DbSet<TourSchedule> TourSchedule { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<TourFavorite> TourFavorites { get; set; }
+        public DbSet<Image> Images { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Quan hệ 1-n : Region - City 
             modelBuilder.Entity<Region>()
                 .HasMany(r => r.Cities)
@@ -116,17 +118,17 @@ namespace VietTravelBE.Infrastructure
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Quan hệ n-n: Tour - Hotel
-            modelBuilder.Entity<Hotel>()
-                .HasMany(h => h.Tours)
-                .WithMany(t => t.Hotels)
-                .UsingEntity<Dictionary<string, object>>(
-                    "hoteltour",
-                    j => j.HasOne<Tour>().WithMany().HasForeignKey("TourId"),
-                    j => j.HasOne<Hotel>().WithMany().HasForeignKey("HotelId"),
-                    j => j.HasKey("HotelId", "TourId") // Khóa chính của bảng trung gian
-                );
+            //modelBuilder.Entity<Hotel>()
+            //    .HasMany(h => h.Tours)
+            //    .WithMany(t => t.Hotels)
+            //    .UsingEntity<Dictionary<string, object>>(
+            //        "hoteltour",
+            //        j => j.HasOne<Tour>().WithMany().HasForeignKey("TourId"),
+            //        j => j.HasOne<Hotel>().WithMany().HasForeignKey("HotelId"),
+            //        j => j.HasKey("HotelId", "TourId") // Khóa chính của bảng trung gian
+            //    );
 
-            // Quan hệ n-n User - Tour
+            // Quan hệ n-n User - TourFavorite
             modelBuilder.Entity<TourFavorite>()
              .HasKey(tf => new { tf.UserId, tf.TourId }); // Định nghĩa khóa chính (UserId + TourId)
 
@@ -145,8 +147,10 @@ namespace VietTravelBE.Infrastructure
             modelBuilder.Entity<Image>()
                 .Property(i => i.ImageType)
                 .IsRequired();
+
             modelBuilder.Entity<Image>()
                 .HasIndex(i => new { i.EntityId, i.ImageType });
+
             modelBuilder.Entity<Image>()
                 .Property(i => i.ImageType)
                 .HasConversion<string>();

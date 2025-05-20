@@ -20,7 +20,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public DateTime? HotelCheckInDate { get; set; }
         public DateTime? HotelCheckOutDate { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public AppUser User { get; set; }
 
         public int? TourId { get; set; }

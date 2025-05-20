@@ -24,10 +24,12 @@ namespace VietTravelBE.Controllers
     public partial class TourController : BaseApiWithSpecController<Tour, TourCreateDto, TourDto>
     {
         private readonly TourService _tourService;
-        public TourController(IGenericRepository<Tour> repo, IUnitOfWork unit, IMapper mapper, TourService tourService)
-            : base(repo, unit, mapper)
+        private readonly IFileValidationService _fileValidationService;
+        public TourController(IGenericRepository<Tour> repo, IUnitOfWork unit, IMapper mapper, IFileValidationService fileValidationService, TourService tourService)
+            : base(repo, unit, mapper) 
         {
             _tourService = tourService;
+            _fileValidationService = fileValidationService;
         }
     }
 
@@ -35,16 +37,20 @@ namespace VietTravelBE.Controllers
     [ApiController]
     public partial class RoomController : BaseApiController<Room, RoomDto, RoomDto>
     {
+        
         public RoomController(IGenericRepository<Room> repo, IUnitOfWork unit, IMapper mapper)
-            : base(repo, unit, mapper) { }
+            : base(repo, unit, mapper) 
+        { 
+            
+        }
     }
 
     [Route("api/[controller]")]
     [ApiController]
-    public partial class CityController : BaseApiController<City, CityDto, CityDto>
+    public partial class CityController : BaseApiController<City, CityCreateDto, CityDto>
     {
-        private readonly CityService _cityService;
-        public CityController(IGenericRepository<City> repo, IUnitOfWork unit, IMapper mapper, CityService cityService)
+        private readonly ICityService _cityService;
+        public CityController(IGenericRepository<City> repo, IUnitOfWork unit, IMapper mapper, ICityService cityService)
             : base(repo, unit, mapper) 
         {
             _cityService = cityService;

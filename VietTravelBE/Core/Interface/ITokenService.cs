@@ -1,12 +1,14 @@
-﻿using VietTravelBE.Infrastructure.Data.Entities;
+﻿using System.Security.Claims;
+using VietTravelBE.Dtos;
+using VietTravelBE.Infrastructure.Data.Entities;
 
 namespace VietTravelBE.Core.Interface
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(AppUser user);
+        Task<string> GenerateJwtToken(AppUser user);
         string GenerateRefreshToken();
-        Task<(string accessToken, string refreshToken)> RefreshToken(string expiredToken, string refreshToken);
+        //ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }
     

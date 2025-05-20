@@ -19,14 +19,15 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public string TitleIntroduct { get; set; }
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
-        public string Pictures { get; set; }
         [Precision(18, 2)]
         public decimal Price { get; set; }
         public int CityId { get; set; }
         public City City { get; set; }
         public ICollection<Room> Rooms { get; set; } 
         public ICollection<Review> Reviews { get; set; } 
-        public ICollection<Tour> Tours { get; set; } = new List<Tour>();
+        //public ICollection<Tour> Tours { get; set; } = new List<Tour>();
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        [NotMapped]
+        public ICollection<Image> Images { get; set; }
     }
 }

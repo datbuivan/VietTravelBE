@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Dtos;
+using VietTravelBE.Errors;
 using VietTravelBE.Infrastructure.Data.Entities;
 
 namespace VietTravelBE.Controllers
@@ -12,58 +15,30 @@ namespace VietTravelBE.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
-        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenService = tokenService;
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
-        {
-            var user = new AppUser
-            {
-                UserName = model.Email,
-                Email = model.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-                return BadRequest(new { Errors = result.Errors });
-
-            await _userManager.AddToRoleAsync(user, "User");
-
-            return Ok(new { Message = "Đăng ký thành công" });
+            _authService = authService;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-                return Unauthorized(new { Message = "Email không tồn tại" });
+            var response = await _authService.LoginAsync(loginDto);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded)
-                return Unauthorized(new { Message = "Mật khẩu không đúng" });
+            if (response.StatusCode != 200)
+                return StatusCode(response.StatusCode, response);
 
-            var accessToken = await _tokenService.CreateToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken();
+            return Ok(response);
+        }
 
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-            await _userManager.UpdateAsync(user);
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        {
+            await _authService.RegisterAsync(registerDto);
+            return Ok(new { Message = "Registration successful" });
 
-            return Ok(new
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            });
         }
 
         [HttpPost("refresh-token")]
@@ -71,18 +46,50 @@ namespace VietTravelBE.Controllers
         {
             try
             {
-                var (accessToken, refreshToken) = await _tokenService.RefreshToken(model.AccessToken, model.RefreshToken);
-
-                return Ok(new
+                var token = await _authService.RefreshTokenAsync(model.RefreshToken);
+                if (token == null)
                 {
-                    AccessToken = accessToken,
-                    RefreshToken = refreshToken
-                });
+                    return Unauthorized(new ApiResponse<AuthResponseDto>(401, "Invalid refresh token attempt."));
+                }
+                return Ok(new ApiResponse<AuthResponseDto>(200, "Refresh token successful.", token));
             }
-            catch (SecurityTokenException ex)
+            catch(SecurityTokenException ex)
             {
-                return Unauthorized(new { Message = ex.Message });
+                return Unauthorized(new ApiResponse<AuthResponseDto>(401, ex.Message));
             }
         }
+
+        [Authorize]
+        [HttpGet("current-user")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var user = await _authService.GetCurrentUserAsync();
+            return Ok(new ApiResponse<UserDto>(200, "Get Current User successfull", user));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _authService.DeleteUserAsync(id);
+            if (!result)
+            {
+                return NotFound(new ApiResponse<string>(404, "User not found or delete failed."));
+            }
+
+            return Ok(new ApiResponse<string>(200, "User deleted successfully."));
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var (success, errorMessage) = await _authService.ConfirmEmailAsync(userId, token);
+            if (!success)
+            {
+                return BadRequest(new { message = errorMessage });
+            }
+            return Ok(new { message = errorMessage });
+        }
+
     }
 }

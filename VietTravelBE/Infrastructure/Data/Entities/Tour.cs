@@ -10,24 +10,22 @@ namespace VietTravelBE.Infrastructure.Data.Entities
     {
         [StringLength(100)]
         public string Name { get; set; }
-        [StringLength(1000)]
-        public string? Pictures { get; set; }
         [Precision(18, 2)]
         public decimal Price { get; set; }
         [Precision(18, 2)]
-        public decimal YoungPrice { get; set; }
-        [Precision(18, 2)]
         public decimal ChildPrice { get; set; }
         [Precision(18, 2)]
-        public decimal? SingleRoomSurcharge { get; set; }
+        public decimal SingleRoomSurcharge { get; set; }
         public int CityId { get; set; }
         public City? City { get; set; } 
         public ICollection<TourSchedule>? TourSchedules { get; set; } = new List<TourSchedule>();
-        public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
+        //public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public ICollection<TourFavorite> TourFavorites { get; set; }
         public ICollection<TourStartDate> TourStartDates { get; set; } = new List<TourStartDate>();
+        [NotMapped]
+        public ICollection<Image> Images { get; set; }
 
     }
 }

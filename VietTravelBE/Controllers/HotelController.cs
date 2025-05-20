@@ -1,20 +1,42 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using VietTravelBE.Core.Interface;
-using VietTravelBE.Core.Specifications;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
-using VietTravelBE.Infrastructure.Data.Entities;
-using VietTravelBE.Infrastructure.Services;
 
 namespace VietTravelBE.Controllers
 {
     public partial class HotelController
     {
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<HotelDto>>> Create([FromBody] HotelCreateDto dto)
+        {
+            return await base.Create(dto);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<HotelDto>>> Update(int id, [FromBody] HotelCreateDto dto)
+        {
+            return await base.Update(id, dto);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<ActionResult<ApiResponse<string>>> Delete(int id)
+        {
+            return await base.Delete(id);
+        }
+
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("rooms")]
         public async Task<ActionResult<IReadOnlyList<RoomDto>>> getRoom(int hotelId)
         {
+            if (hotelId <= 0)
+            {
+                return BadRequest(new ApiResponse<RoomDto>(400, "Invalid hotelId"));
+            }
+
             try
             {
                 var room = await _roomService.GetRoomByHotelId(hotelId);
