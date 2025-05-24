@@ -12,7 +12,7 @@ namespace VietTravelBE.Controllers
     public abstract class BaseApiController<TEntity, TCreateDto, TDto> : ControllerBase
             where TEntity : BaseEntity, new ()
             where TCreateDto: class
-             where TDto : class
+            where TDto : class
     {
         protected readonly IGenericRepository<TEntity> _repo;
         protected readonly IUnitOfWork _unit;

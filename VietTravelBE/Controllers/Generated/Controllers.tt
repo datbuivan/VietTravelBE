@@ -11,11 +11,8 @@ namespace VietTravelBE.Controllers
 <#
     var entities = new List<(string Entity, string CreateDto, string Dto, bool HasSpec)>
     { 
-        ("Hotel", "HotelCreateDto", "HotelDto", true),
-        ("Tour", "TourCreateDto", "TourDto", true),
         ("Room", "RoomDto", "RoomDto", false),
-        ("City", "CityCreateDto", "CityDto", false),
-         ("Region", "RegionDto", "RegionDto", false)
+        ("Region", "RegionDto", "RegionDto", false)
     };
 
     foreach (var (entity, createDto, dto, hasSpec) in entities)

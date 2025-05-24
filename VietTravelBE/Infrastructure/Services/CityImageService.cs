@@ -41,26 +41,9 @@ namespace VietTravelBE.Infrastructure.Services
             return image;
         }
 
-        public async Task ReplacePrimaryImageAsync(City city, IFormFile newFile)
+        public async Task DeleteImageAsync(string publicId)
         {
-            Image? oldImage = null;
-
-            if (city.Image != null)
-            {
-                var imageType = city.Image.ImageType;
-
-                oldImage = await _repoImage
-                    .FindSingleAsync(i => i.Id == city.Id && i.ImageType == imageType && i.IsPrimary);
-            }
-
-            if (oldImage != null)
-            {
-                await _cloudinary.DeleteImageAsync(oldImage.PublicId);
-                _repoImage.Delete(oldImage);
-                await _unit.Complete();
-            }
-
-            await AddPrimaryImageAsync(city, newFile);
+            await _cloudinary.DeleteImageAsync(publicId);
         }
     }
 }

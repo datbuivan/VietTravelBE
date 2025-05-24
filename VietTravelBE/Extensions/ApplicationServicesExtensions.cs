@@ -15,6 +15,9 @@ namespace VietTravelBE.Extensions
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITourFavoriteRepository, TourFavoriteRepository>();
+            services.AddScoped<IScheduleRepository, ScheduleRepository>();
+            services.AddScoped<IStartDateRepository, StartDateRepository>();
 
 
             services.AddScoped<ITokenService, TokenService>();
@@ -30,12 +33,14 @@ namespace VietTravelBE.Extensions
 
             services.AddScoped<RoomService>();
             services.AddScoped<ICityService,CityService>();
-            services.AddScoped<HotelService>();
-            services.AddScoped<TourService>();
+            services.AddScoped<IHotelService,HotelService>();
+            services.AddScoped<ITourService,TourService>();
 
             services.AddScoped<IFileValidationService, FileValidationService>();
 
             services.AddScoped<IEmailService, EmailService>();
+
+            services.AddScoped<ITourFavoriteService, TourFavoriteService>();
 
             services.AddHttpContextAccessor();
             return services;

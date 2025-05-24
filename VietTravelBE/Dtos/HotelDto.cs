@@ -16,8 +16,8 @@ namespace VietTravelBE.Dtos
         public string TitleIntroduct { get; set; }
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
-        public string Pictures { get; set; }
-        public decimal Price { get; set; }
+        //public decimal Price { get; set; }
         public int CityId { get; set; }
+        public List<ImageDto>? Images { get; set; }
     }
 }

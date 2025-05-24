@@ -113,17 +113,37 @@ namespace VietTravelBE.Infrastructure.Services
             try
             {
                 var city = await _cityRepo.GetByIdAsync(id);
+
                 if (city == null)
-                    throw new ApiException(404, "City not found");
+                    throw new KeyNotFoundException($"City with ID {id} not found.");
 
                 _mapper.Map(dto, city);
+
+                var image = await _imageRepo
+                    .GetPrimaryImageByEntityIdAsync(id, ImageType.City);
+                if(dto.PrimaryImage != null)
+                {
+                    if(image != null)
+                    {
+                        if (!string.IsNullOrEmpty(image.PublicId))
+                            await _imageService.DeleteImageAsync(image.PublicId);
+                        _imageRepo.Delete(image);   
+                    }
+
+                    var newImage = await _imageService.AddPrimaryImageAsync(city, dto.PrimaryImage);
+                    city.Image = new Image
+                    {
+                        Id = newImage.Id,
+                        Url = newImage.Url,
+                        ImageType = newImage.ImageType,
+                        EntityId = newImage.EntityId,
+                        PublicId = newImage.PublicId,
+                        IsPrimary = newImage.IsPrimary,
+                    };
+
+                }
                 _cityRepo.Update(city);
                 await _unit.Complete();
-
-                if (dto.PrimaryImage != null)
-                {
-                    await _imageService.ReplacePrimaryImageAsync(city, dto.PrimaryImage);
-                }
 
                 await transaction.CommitAsync();
                 return _mapper.Map<CityDto>(city);

@@ -9,9 +9,9 @@ namespace VietTravelBE.Infrastructure.Services
     public class CloudinaryService : ICloudinaryService
     {
         private readonly Cloudinary _cloudinary;
+        private readonly ILogger<CloudinaryService> _logger;
 
-
-        public CloudinaryService(IConfiguration config)
+        public CloudinaryService(IConfiguration config, ILogger<CloudinaryService> logger)
         {
             var cloudName = config["Cloudinary:CloudName"];
             var apiKey = config["Cloudinary:ApiKey"];
@@ -19,6 +19,7 @@ namespace VietTravelBE.Infrastructure.Services
 
             var account = new Account(cloudName, apiKey, apiSecret);
             _cloudinary = new Cloudinary(account);
+            _logger = logger;
         }
 
         public async Task<ImageUploadResultDto> UploadImageAsync(IFormFile file, string entityType, int entityId)
@@ -62,7 +63,8 @@ namespace VietTravelBE.Infrastructure.Services
 
             if (deletionResult.Result != "ok")
             {
-                throw new Exception("Failed to delete image from Cloudinary");
+                _logger.LogError($"Failed to delete image from Cloudinary. PublicId: {publicId}, Error: {deletionResult.Error?.Message}");
+                throw new Exception($"Failed to delete image from Cloudinary: {deletionResult.Error?.Message}");
             }
         }
     }

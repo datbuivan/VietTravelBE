@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using VietTravelBE.Binders;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Extensions;
 using VietTravelBE.Helpers;

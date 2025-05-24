@@ -9,8 +9,6 @@ namespace VietTravelBE.Dtos
     {
         [StringLength(100)]
         public string Name { get; set; }
-        [StringLength(1000)]
-        public string? Pictures { get; set; }
         [Precision(18, 2)]
         public decimal Price { get; set; }
         [Precision(18, 2)]
@@ -20,6 +18,6 @@ namespace VietTravelBE.Dtos
         public int CityId { get; set; }
         public List<TourStartDateDto>? TourStartDates { get; set; }
         public List<TourScheduleDto>? TourSchedules { get; set; }
-        public List<IFormFile>? Images { get; set; }
+        public List<ImageDto> Images { get; set; }
     }
 }

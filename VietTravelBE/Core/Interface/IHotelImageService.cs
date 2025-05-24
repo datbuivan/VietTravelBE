@@ -6,5 +6,6 @@ namespace VietTravelBE.Core.Interface
     {
         Task<Image> AddPrimaryImageAsync(Hotel hotel, IFormFile primaryImage);
         Task<List<Image>> AddImagesAsync(Hotel hotel, List<IFormFile> images);
+        Task DeleteImageAsync(string publicId);
     }
 }

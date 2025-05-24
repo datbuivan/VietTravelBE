@@ -11,9 +11,10 @@ namespace VietTravelBE.Core.Interface
         Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
         Task<int> CountAsync(ISpecification<T> spec);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
-        Task<T?> FindSingleAsync(Expression<Func<T, bool>> predicate);
+        Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? include = null);
         void Add(T entity);
         void AddRange(IEnumerable<T> entities);
+        void RemoveRange(IEnumerable<T> entities);
         void Update(T entity);
         void Delete(T entity);
     }

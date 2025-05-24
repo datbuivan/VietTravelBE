@@ -1,24 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
+using VietTravelBE.Infrastructure.Data.Entities;
 
 namespace VietTravelBE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TourScheduleController : ControllerBase
+    public partial class TourScheduleController : BaseApiController<TourSchedule, TourScheduleCreateDto, TourScheduleDto>
     {
         private readonly ITourScheduleService _tourScheduleService;
 
-        public TourScheduleController(ITourScheduleService tourScheduleService)
+        public TourScheduleController(IGenericRepository<TourSchedule> repo,IUnitOfWork unit, IMapper mapper, ITourScheduleService tourScheduleService)
+            : base(repo, unit, mapper)
         {
             _tourScheduleService = tourScheduleService;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse<TourScheduleDto>>> Create([FromBody] TourScheduleCreateDto tourScheduleCreateDto)
+        [HttpPost("create-schedule")]
+        public override async Task<ActionResult<ApiResponse<TourScheduleDto>>> Create([FromBody] TourScheduleCreateDto tourScheduleCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ApiResponse<TourScheduleCreateDto>(400, "Invalid TourSchedule data"));
@@ -34,7 +37,7 @@ namespace VietTravelBE.Controllers
             }
         }
 
-        [HttpGet("{tourId}")]
+        [HttpGet("by-tourId/{tourId}")]
         public async Task<ActionResult<ApiResponse<IReadOnlyList<TourScheduleDto>>>> GetByTourId(int tourId)
         {
             try

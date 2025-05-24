@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VietTravelBE.Binders;
 using VietTravelBE.Infrastructure.Data.Entities.Custom;
 
 namespace VietTravelBE.Dtos
@@ -19,6 +18,6 @@ namespace VietTravelBE.Dtos
         [Precision(18, 2)]
         public decimal SingleRoomSurcharge { get; set; }
         public int CityId { get; set; }
-        public IFormFile? PrimaryImage { get; set; }
+        public List<IFormFile>? Images { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VietTravelBE.Core.Interface;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
 using VietTravelBE.Infrastructure.Data.Entities;
@@ -8,9 +10,17 @@ using VietTravelBE.Infrastructure.Data.Entities;
 
 namespace VietTravelBE.Controllers
 {
-    public partial class CityController
+    [Route("api/[controller]")]
+    [ApiController]
+    public partial class CityController : BaseApiController<City, CityCreateDto, CityDto>
     {
-       
+        private readonly ICityService _cityService;
+        public CityController(IGenericRepository<City> repo, IUnitOfWork unit, IMapper mapper, ICityService cityService)
+            : base(repo, unit, mapper)
+        {
+            _cityService = cityService;
+        }
+
         [HttpGet]
         public override async Task<ActionResult<ApiResponse<IReadOnlyList<CityDto>>>> GetAll()
         {

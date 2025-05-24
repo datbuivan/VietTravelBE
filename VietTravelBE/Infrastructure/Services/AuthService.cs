@@ -57,7 +57,7 @@ namespace VietTravelBE.Infrastructure.Services
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(Convert.ToDouble(_config["Token:AccessTokenExpiresMinutes"]!));
+            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(Convert.ToDouble(_config["Token:AccessTokenExpiresHours"]!));
             await _userManager.UpdateAsync(user);
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -66,6 +66,8 @@ namespace VietTravelBE.Infrastructure.Services
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
+                ExpiresIn = 3600, // 1 giờ
+                ExpiresAt = DateTime.UtcNow.AddHours(1).ToUniversalTime(),
                 UserName = user.UserName,
                 Roles = roles.ToArray(),
             });
@@ -101,10 +103,11 @@ namespace VietTravelBE.Infrastructure.Services
         public async Task<AuthResponseDto> RefreshTokenAsync(string refreshToken)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
-            if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-            {
-                throw new Exception("Invalid or expired refresh token");
-            }
+            if (user == null)
+                throw new UnauthorizedAccessException("Invalid refresh token");
+
+            if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                throw new UnauthorizedAccessException("Refresh token expired");
 
             var accessToken = await _tokenService.GenerateJwtToken(user);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
@@ -125,6 +128,8 @@ namespace VietTravelBE.Infrastructure.Services
             {
                 AccessToken = accessToken,
                 RefreshToken = newRefreshToken,
+                ExpiresIn = 3600, // 1 giờ
+                ExpiresAt = DateTime.UtcNow.AddHours(1).ToUniversalTime(),
                 UserName = user.UserName,
                 Roles = roles.ToArray()
             };

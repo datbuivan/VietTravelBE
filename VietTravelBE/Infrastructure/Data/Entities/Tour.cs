@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using VietTravelBE.Infrastructure.Data.Entities.Custom;
+using System.Text.Json.Serialization;
 
 namespace VietTravelBE.Infrastructure.Data.Entities
 {
@@ -22,6 +23,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         //public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        [JsonIgnore]
         public ICollection<TourFavorite> TourFavorites { get; set; }
         public ICollection<TourStartDate> TourStartDates { get; set; } = new List<TourStartDate>();
         [NotMapped]

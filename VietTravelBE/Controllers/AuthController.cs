@@ -46,6 +46,11 @@ namespace VietTravelBE.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(model.RefreshToken))
+                {
+                    return Unauthorized(new ApiResponse<string>(401, "Refresh token is required"));
+                }
+
                 var token = await _authService.RefreshTokenAsync(model.RefreshToken);
                 if (token == null)
                 {

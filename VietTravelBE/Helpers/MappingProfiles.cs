@@ -15,23 +15,15 @@ namespace VietTravelBE.Helpers
             CreateMap<Region, RegionDto>().ReverseMap();
 
             CreateMap<Tour, TourDto>().ReverseMap();
-            CreateMap<TourCreateDto, Tour>()
-                .ForMember(dest => dest.Images, opt => opt.Ignore());
+            CreateMap<TourCreateDto, Tour>().ReverseMap();
 
-            // Nếu bạn cần mapping ngược lại từ Tour sang TourCreateDto
-            CreateMap<Tour, TourCreateDto>()
-                .ForMember(dest => dest.PrimaryImage, opt => opt.Ignore());
+            CreateMap<Tour, TourCreateDto>();
 
             CreateMap<TourStartDate, TourStartDateDto>().ReverseMap();
 
             CreateMap<HotelCreateDto, Hotel>().ReverseMap();
-            CreateMap<Hotel, HotelDto>()
-            .ForMember(dest => dest.Price, opt =>
-                opt.MapFrom(src => src.Rooms.Min(room => room.Price)));
-            CreateMap<Hotel, Hotel>()
-            .ForMember(dest => dest.Price,
-                opt => opt.MapFrom(src => src.Rooms != null && src.Rooms.Any()
-                    ? src.Rooms.Min(r => r.Price): 0));
+            CreateMap<Hotel, HotelDto>();
+            CreateMap<Hotel, Hotel>();
 
             CreateMap<TourSchedule, TourScheduleDto>().ReverseMap();
             CreateMap<TourScheduleDto, TourSchedule>().ReverseMap();
@@ -48,6 +40,9 @@ namespace VietTravelBE.Helpers
 
             CreateMap<Image, ImageDto>().ReverseMap();
             CreateMap<ImageDto, Image>().ReverseMap();
+
+            CreateMap<TourFavorite, TourFavoriteDto>().ReverseMap();
+            CreateMap<TourFavoriteDto, TourFavorite>().ReverseMap();
 
 
         }

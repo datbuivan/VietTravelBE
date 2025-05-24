@@ -14,7 +14,7 @@ namespace VietTravelBE.Dtos
         public string TitleIntroduct { get; set; }
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
-        public string Pictures { get; set; }
         public int CityId { get; set; }
+        public List<IFormFile>? Images { get; set; }
     }
 }

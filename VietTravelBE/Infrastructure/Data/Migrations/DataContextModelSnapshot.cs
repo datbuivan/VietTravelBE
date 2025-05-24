@@ -332,6 +332,7 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("CityId")
+                        .HasPrecision(18, 2)
                         .HasColumnType("int");
 
                     b.Property<string>("ContentIntroduct")
@@ -348,10 +349,6 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TitleIntroduct")
                         .IsRequired()
@@ -583,21 +580,28 @@ namespace VietTravelBE.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("VietTravelBE.Infrastructure.Data.Entities.TourFavorite", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TourId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("TourId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "TourId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TourId");
+
+                    b.HasIndex("UserId", "TourId")
+                        .IsUnique();
 
                     b.ToTable("tourfavorite");
                 });

@@ -6,6 +6,6 @@ namespace VietTravelBE.Core.Interface
     public interface ICityImageService
     {
         Task<Image> AddPrimaryImageAsync(City city, IFormFile primaryImage);
-        Task ReplacePrimaryImageAsync(City city, IFormFile newFile);
+        Task DeleteImageAsync(string publicId);
     }
 }

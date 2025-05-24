@@ -38,7 +38,8 @@ namespace VietTravelBE.Extensions
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = config["Token:Issuer"],
                         ValidAudience = config["Token:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"]!)),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

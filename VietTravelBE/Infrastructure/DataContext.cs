@@ -117,20 +117,21 @@ namespace VietTravelBE.Infrastructure
                 .HasForeignKey(r => r.HotelId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Quan hệ n-n: Tour - Hotel
-            //modelBuilder.Entity<Hotel>()
-            //    .HasMany(h => h.Tours)
-            //    .WithMany(t => t.Hotels)
-            //    .UsingEntity<Dictionary<string, object>>(
-            //        "hoteltour",
-            //        j => j.HasOne<Tour>().WithMany().HasForeignKey("TourId"),
-            //        j => j.HasOne<Hotel>().WithMany().HasForeignKey("HotelId"),
-            //        j => j.HasKey("HotelId", "TourId") // Khóa chính của bảng trung gian
-            //    );
-
             // Quan hệ n-n User - TourFavorite
+            //modelBuilder.Entity<TourFavorite>()
+            // .HasKey(tf => new { tf.UserId, tf.TourId }); // Định nghĩa khóa chính (UserId + TourId)
+
             modelBuilder.Entity<TourFavorite>()
-             .HasKey(tf => new { tf.UserId, tf.TourId }); // Định nghĩa khóa chính (UserId + TourId)
+            .HasKey(tf => tf.Id); // Định nghĩa Id là khóa chính
+
+            modelBuilder.Entity<TourFavorite>()
+                .Property(tf => tf.Id)
+                .ValueGeneratedOnAdd(); // Id tự động tăng
+
+            // Đảm bảo cặp UserId, TourId là unique để tránh trùng lặp
+            modelBuilder.Entity<TourFavorite>()
+                .HasIndex(tf => new { tf.UserId, tf.TourId })
+                .IsUnique();
 
             modelBuilder.Entity<TourFavorite>()
                 .HasOne(tf => tf.User)

@@ -1,24 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
+using VietTravelBE.Infrastructure.Data.Entities;
 using VietTravelBE.Infrastructure.Services;
 
 namespace VietTravelBE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TourStartDateController : ControllerBase
+    public class TourStartDateController : BaseApiController<TourStartDate, TourStartDateCreateDto, TourStartDateDto>
     {
         private readonly ITourStartDateService _service;
-        public TourStartDateController(ITourStartDateService service)
+        public TourStartDateController(IGenericRepository<TourStartDate> repo, IUnitOfWork unit, IMapper mapper, ITourStartDateService service)
+            : base(repo, unit, mapper)
         {
             _service = service;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse<TourStartDateDto>>> Create([FromBody] TourStartDateCreateDto dto)
+        [HttpPost("create-start-date")]
+        public override async Task<ActionResult<ApiResponse<TourStartDateDto>>> Create([FromBody] TourStartDateCreateDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ApiResponse<TourScheduleCreateDto>(400, "Invalid TourSchedule data"));
@@ -34,7 +37,7 @@ namespace VietTravelBE.Controllers
             }
         }
 
-        [HttpGet("{tourId}")]
+        [HttpGet("by-tourId/{tourId}")]
         public async Task<ActionResult<ApiResponse<IReadOnlyList<TourStartDateDto>>>> GetByTourId(int tourId)
         {
             try

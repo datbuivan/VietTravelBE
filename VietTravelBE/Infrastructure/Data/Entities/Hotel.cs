@@ -8,7 +8,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
     [Table("hotel")]
     public class Hotel : BaseEntity
     {
-       
+
         [StringLength(100)]
         public string Name { get; set; }
         [StringLength(255)]
@@ -20,14 +20,14 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         [StringLength(2000)]
         public string ContentIntroduct { get; set; }
         [Precision(18, 2)]
-        public decimal Price { get; set; }
+        //public decimal Price { get; set; }
         public int CityId { get; set; }
-        public City City { get; set; }
-        public ICollection<Room> Rooms { get; set; } 
-        public ICollection<Review> Reviews { get; set; } 
+        public City? City { get; set; }
+        public ICollection<Room>? Rooms { get; set; } = new List<Room>();
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
         //public ICollection<Tour> Tours { get; set; } = new List<Tour>();
-        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public ICollection<Booking>? Bookings { get; set; } = new List<Booking>();
         [NotMapped]
-        public ICollection<Image> Images { get; set; }
+        public ICollection<Image>? Images { get; set; } = new List<Image>();
     }
 }

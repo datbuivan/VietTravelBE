@@ -38,7 +38,7 @@ namespace VietTravelBE.Infrastructure.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(_config["Token:AccessTokenExpiresMinutes"]!));
+            var expires = DateTime.Now.AddHours(Convert.ToDouble(_config["Token:AccessTokenExpiresHours"]!));
 
             var token = new JwtSecurityToken(
                 issuer: _config["Token:Issuer"],
