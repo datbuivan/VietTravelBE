@@ -124,12 +124,12 @@ namespace VietTravelBE.Controllers
             return prop?.GetValue(entity);
         }
 
-        protected virtual ISpecification<TEntity> CreateSpecification(SpecParams? specParams)
-        {
-            return specParams == null
-                ? new BaseSpecification<TEntity>()
-                : new Specification<TEntity>(specParams); 
-        }
+        //protected virtual ISpecification<TEntity> CreateSpecification(TourSpecParams? specParams)
+        //{
+        //    return specParams == null
+        //        ? new BaseSpecification<TEntity>()
+        //        : new Specification<TEntity>(specParams); 
+        //}
 
 
     }

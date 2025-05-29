@@ -2,16 +2,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VietTravelBE.Core.Interface;
+using VietTravelBE.Core.Specifications;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
 using VietTravelBE.Infrastructure.Data.Entities;
 using VietTravelBE.Infrastructure.Services;
+using VietTravelBE.RequestHelpers;
 using Xunit.Sdk;
 namespace VietTravelBE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public partial class TourController : BaseApiWithSpecController<Tour, TourCreateDto, TourDto>
+    public partial class TourController : BaseApiController<Tour, TourCreateDto, TourDto>
     {
         private readonly ITourService _tourService;
         private readonly IFileValidationService _fileValidationService;
@@ -58,25 +60,28 @@ namespace VietTravelBE.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public override async Task<ActionResult<ApiResponse<string>>> Delete(int id)
         {
             return await base.Delete(id);
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public override async Task<ActionResult<ApiResponse<TourDto>>> Create([FromForm]TourCreateDto tourDto)
         {
 
-            //if (tourDto.PrimaryImage != null)
-            //{
-            //    string errorMessage;
-            //    if (!_fileValidationService.ValidateFile(tourDto.PrimaryImage, out errorMessage))
-            //    {
-            //        return BadRequest(new ApiResponse<string>(400, errorMessage));
-            //    }
-            //}
+            if (tourDto.Images != null && tourDto.Images.Any() )
+            {
+                string errorMessage;
+                foreach(var image in tourDto.Images)
+                {
+                    if (!_fileValidationService.ValidateFile(image, out errorMessage))
+                    {
+                        return BadRequest(new ApiResponse<string>(400, errorMessage));
+                    }
+                }
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest(new ApiResponse<TourCreateDto>(400, "Invalid Tour data"));
@@ -93,7 +98,7 @@ namespace VietTravelBE.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public override async Task<ActionResult<ApiResponse<TourDto>>> Update(int id, [FromForm] TourCreateDto dto)
         {
             if (!ModelState.IsValid)
@@ -112,6 +117,17 @@ namespace VietTravelBE.Controllers
             {
                 return StatusCode(500, new ApiResponse<string>(500, $"Internal Server Error: {ex.Message}"));
             }
+        }
+
+        [HttpGet("spec-params")]
+        public async Task<ActionResult<ApiResponse<IReadOnlyList<TourDto>>>> GetWidthSpec([FromQuery] TourSpecParams tourParams)
+        {
+            var toursDto = await _tourService.GetToursWithSpec(tourParams);
+            if (toursDto == null)
+            {
+                return BadRequest(new ApiResponse<string>(404, "Tour with filter not found"));
+            }
+            return Ok(new ApiResponse<IReadOnlyList<TourDto>>(200, "Success", toursDto));
         }
 
     }

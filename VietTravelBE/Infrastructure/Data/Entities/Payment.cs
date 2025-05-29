@@ -15,5 +15,8 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public string Status { get; set; } // Pending, Completed, Failed
+        public string TransactionId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

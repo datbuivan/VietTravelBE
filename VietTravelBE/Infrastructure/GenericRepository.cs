@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using VietTravelBE.Core.Interface;
 using VietTravelBE.Infrastructure.Data.Entities.Custom;
@@ -79,6 +80,7 @@ namespace VietTravelBE.Infrastructure
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
+
 
     }
 }

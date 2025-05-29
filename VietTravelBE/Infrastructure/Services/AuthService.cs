@@ -154,6 +154,7 @@ namespace VietTravelBE.Infrastructure.Services
             {
                 Id = user.Id,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
                 UserName = user.UserName,
                 Roles = roles.ToArray()
             };

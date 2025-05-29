@@ -18,7 +18,7 @@ namespace VietTravelBE.Infrastructure.Data.Entities
         [Precision(18, 2)]
         public decimal SingleRoomSurcharge { get; set; }
         public int CityId { get; set; }
-        public City? City { get; set; } 
+        public City City { get; set; } 
         public ICollection<TourSchedule>? TourSchedules { get; set; } = new List<TourSchedule>();
         //public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
         public ICollection<Review> Reviews { get; set; }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using VietTravelBE.Core.Interface;
+using VietTravelBE.Core.Specifications;
 using VietTravelBE.Dtos;
 using VietTravelBE.Errors;
 using VietTravelBE.Extensions;
 using VietTravelBE.Infrastructure.Data.Entities;
+using VietTravelBE.RequestHelpers;
 
 namespace VietTravelBE.Infrastructure.Services
 {
@@ -14,6 +16,7 @@ namespace VietTravelBE.Infrastructure.Services
         private readonly IUnitOfWork _unit;
         private readonly IMapper _mapper;
         private readonly IImageRepository _imageRepo;
+        private readonly ICityRepository _cityRepo;
         private readonly IScheduleRepository _scheduleRepo;
         private readonly IStartDateRepository _dateRepo;
 
@@ -22,6 +25,7 @@ namespace VietTravelBE.Infrastructure.Services
             IMapper mapper,
             IUnitOfWork unit,
             ITourImageService imageService,
+            ICityRepository cityRepo,
             IImageRepository imageRepo,
             IScheduleRepository scheduleRepo,
             IStartDateRepository dateRepo
@@ -32,6 +36,8 @@ namespace VietTravelBE.Infrastructure.Services
             _unit = unit;
             _imageService = imageService;
             _imageRepo = imageRepo;
+            _cityRepo = cityRepo;
+            _dateRepo = dateRepo;
             _scheduleRepo = scheduleRepo;
             _dateRepo = dateRepo;
         }
@@ -68,9 +74,10 @@ namespace VietTravelBE.Infrastructure.Services
             var tour = await _tourRepo.GetByIdAsync(id);
             var images = await _imageRepo
                 .GetImagesByEntityIdAsync(tour.Id, ImageType.Tour);
+            var city = await _cityRepo.GetByIdAsync(tour.CityId);
             var schedules = await _scheduleRepo.GetScheduleByTourId(tour.Id);
             var startDates = await _dateRepo.GetStartDateByTourId(tour.Id);
-            var result =new TourDto
+            var result = new TourDto
             {
                 Id = tour.Id,
                 Name = tour.Name,
@@ -78,6 +85,7 @@ namespace VietTravelBE.Infrastructure.Services
                 ChildPrice = tour.ChildPrice,
                 SingleRoomSurcharge = tour.SingleRoomSurcharge,
                 CityId = tour.CityId,
+                CityName = city.Name,
                 TourSchedules = schedules.Select(schedule => new TourScheduleDto
                 {
                     Id =schedule.Id,
@@ -91,6 +99,7 @@ namespace VietTravelBE.Infrastructure.Services
                     Id = startDate.Id,
                     AvailableSlots = startDate.AvailableSlots,
                     StartDate = startDate.StartDate,
+                    TourId = startDate.TourId,
                 }).ToList() ?? new List<TourStartDateDto>(),
                 Images = images?.Select(image => new ImageDto
                 {
@@ -192,6 +201,64 @@ namespace VietTravelBE.Infrastructure.Services
                 await transaction.RollbackAsync();
                 throw new ApiException(500, "An error occurred while updating the tour", ex.Message);
             }
+        }
+
+        public async Task<IReadOnlyList<TourDto>> GetToursWithSpec(TourSpecParams tourParams)
+        {
+            var spec = new TourWithCityAndStartDateSpecification(tourParams);
+
+            //var countSpec = new TourWithFiltersForCountSpecificication(tourParams);
+
+            //var totalItem = await _tourRepo.CountAsync(countSpec);
+
+            var tours = await _tourRepo.ListAsync(spec);
+
+
+            var toursDto = tours.Select(tour => tour.ToTourDto()).ToList();
+            var result = new List<TourDto>();
+            foreach (var tour in tours)
+            {
+                var images = await _imageRepo
+                    .GetImagesByEntityIdAsync(tour.Id, ImageType.Tour);
+                var city = await _cityRepo.GetByIdAsync(tour.CityId);
+                var schedules = await _scheduleRepo.GetScheduleByTourId(tour.Id);
+                var startDates = await _dateRepo.GetStartDateByTourId(tour.Id);
+                result.Add(new TourDto
+                {
+                    Id = tour.Id,
+                    Name = tour.Name,
+                    Price = tour.Price,
+                    ChildPrice = tour.ChildPrice,
+                    SingleRoomSurcharge = tour.SingleRoomSurcharge,
+                    CityId = tour.CityId,
+                    CityName = city.Name,
+                    TourSchedules = schedules.Select(schedule => new TourScheduleDto
+                    {
+                        Id = schedule.Id,
+                        DayNumber = schedule.DayNumber,
+                        Title = schedule.Title,
+                        Description = schedule.Description,
+
+                    }).ToList() ?? new List<TourScheduleDto>(),
+                    TourStartDates = startDates.Select(startDate => new TourStartDateDto
+                    {
+                        Id = startDate.Id,
+                        AvailableSlots = startDate.AvailableSlots,
+                        StartDate = startDate.StartDate,
+                        TourId = startDate.TourId,
+                    }).ToList() ?? new List<TourStartDateDto>(),
+                    Images = images?.Select(image => new ImageDto
+                    {
+                        Id = image.Id,
+                        Url = image.Url,
+                        IsPrimary = image.IsPrimary
+                    }).ToList() ?? new List<ImageDto>(),
+                });
+            }
+            return result;
+
+            //return new Pagination<TourDto>(tourParams.PageIndex, tourParams.PageSize,totalItem, toursDto);
+
         }
 
     }

@@ -11,7 +11,7 @@ namespace VietTravelBE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public partial class HotelController : BaseApiWithSpecController<Hotel, HotelCreateDto, HotelDto>
+    public partial class HotelController : BaseApiController<Hotel, HotelCreateDto, HotelDto>
     {
         private readonly IHotelService _hotelService;
         private readonly IFileValidationService _fileValidationService;
@@ -46,14 +46,18 @@ namespace VietTravelBE.Controllers
         public override async Task<ActionResult<ApiResponse<HotelDto>>> Create([FromForm] HotelCreateDto hotelDto)
         {
 
-            //if (hotelDto.Images != null)
-            //{
-            //    string errorMessage;
-            //    if (!_fileValidationService.ValidateFile(hotelDto.Images, out errorMessage))
-            //    {
-            //        return BadRequest(new ApiResponse<string>(400, errorMessage));
-            //    }
-            //}
+            if (hotelDto.Images != null && hotelDto.Images.Any())
+            {
+                string errorMessage;
+                foreach(var image in hotelDto.Images)
+                {
+                    if (!_fileValidationService.ValidateFile(image, out errorMessage))
+                    {
+                        return BadRequest(new ApiResponse<string>(400, errorMessage));
+                    }
+
+                }
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest(new ApiResponse<HotelCreateDto>(400, "Invalid Hotel data"));

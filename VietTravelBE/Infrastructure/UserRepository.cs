@@ -44,6 +44,11 @@ namespace VietTravelBE.Infrastructure
         {
             return await _userManager.GetRolesAsync(user);
         }
+
+        public async Task<bool> UserExistsAsync(string userId)
+        {
+            return await _userManager.Users.AnyAsync(u => u.Id == userId);
+        }
     }
     
 }

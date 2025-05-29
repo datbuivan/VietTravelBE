@@ -16,5 +16,10 @@ namespace VietTravelBE.Infrastructure
         {
            return await _context.Set<TourStartDate>().Where(x => x.TourId == id).ToListAsync();
         }
+
+        public async Task<bool> StartDateExistsAsync(int id)
+        {
+            return await _context.Set<TourStartDate>().AnyAsync(s => s.Id == id);
+        }
     }
 }

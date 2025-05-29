@@ -6,7 +6,7 @@ namespace VietTravelBE.Core.Specifications
 {
     public class Specification<T> : BaseSpecification<T> where T : class
     {
-        public Specification(SpecParams specParams) : base(x =>
+        public Specification(TourSpecParams specParams) : base(x =>
             (string.IsNullOrEmpty(specParams.Search) ||
              (typeof(T).GetProperty("Name") != null &&
             EF.Functions.Like(EF.Property<string>(x, "Name"), $"%{specParams.Search}%"))) &&
@@ -19,7 +19,7 @@ namespace VietTravelBE.Core.Specifications
             {
                 AddInclude("Rooms"); 
             }
-            ApplyPaging(specParams.PageSize * (specParams.PageIndex - 1), specParams.PageSize);
+            //ApplyPaging(specParams.PageSize * (specParams.PageIndex - 1), specParams.PageSize);
 
             if (typeof(T).GetProperty("Price") != null)
             {

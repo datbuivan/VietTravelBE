@@ -16,5 +16,6 @@ namespace VietTravelBE.Infrastructure
             return await _context.Set<City>().Where(c => c.RegionId == regionId)
                                    .ToListAsync();
         }
+
     }
 }

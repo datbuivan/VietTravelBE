@@ -9,5 +9,6 @@ namespace VietTravelBE.Core.Interface
         Task<AppUser> FindByIdAsync(string userId);
         Task UpdateAsync(AppUser user);
         Task<IList<string>> GetRolesAsync(AppUser user);
+        Task<bool> UserExistsAsync(string userId);
     }
 }

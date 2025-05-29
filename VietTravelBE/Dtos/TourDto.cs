@@ -16,8 +16,10 @@ namespace VietTravelBE.Dtos
         [Precision(18, 2)]
         public decimal SingleRoomSurcharge { get; set; }
         public int CityId { get; set; }
+        public string CityName { get; set; }
         public List<TourStartDateDto>? TourStartDates { get; set; }
         public List<TourScheduleDto>? TourSchedules { get; set; }
         public List<ImageDto> Images { get; set; }
+        
     }
 }

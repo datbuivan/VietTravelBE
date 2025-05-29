@@ -37,7 +37,7 @@ namespace VietTravelBE.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             await _authService.RegisterAsync(registerDto);
-            return Ok(new { Message = "Registration successful" });
+            return Ok(new ApiResponse<string>(200, "Registration successful, please confirm your email"));
 
         }
 
@@ -91,9 +91,12 @@ namespace VietTravelBE.Controllers
             var (success, errorMessage) = await _authService.ConfirmEmailAsync(userId, token);
             if (!success)
             {
-                return BadRequest(new { message = errorMessage });
+                var errorUrl = "http://localhost:4200/verify-email?success=false&message=" + Uri.EscapeDataString("Xác nhận thất bại.");
+                return Redirect(errorUrl);
             }
-            return Ok(new { message = errorMessage });
+            var frontendUrl = "http://localhost:4200/verify-email?success=true&userId=" + userId;
+            return Redirect(frontendUrl);
+            
         }
 
     }
